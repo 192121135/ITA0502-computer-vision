@@ -1,0 +1,18 @@
+from PIL import Image, ImageDraw
+width, height = 400, 400
+image = Image.new("RGB", (width, height), "white")
+draw = ImageDraw.Draw(image)
+rect_x1, rect_y1 = 100, 100
+rect_x2, rect_y2 = 300, 300
+draw.rectangle([(rect_x1, rect_y1), (rect_x2, rect_y2)], fill="black")
+colors = ["red", "green", "blue", "yellow"]
+corner_size = 30
+for i, color in enumerate(colors):
+    x = rect_x1 if i % 2 == 0 else rect_x2 - corner_size
+    y = rect_y1 if i // 2 == 0 else rect_y2 - corner_size
+    draw.rectangle(
+        [(x, y), (x + corner_size, y + corner_size)],
+        fill=color,
+    )
+image.save("colored_rectangle_with_corners.png")
+image.show()
