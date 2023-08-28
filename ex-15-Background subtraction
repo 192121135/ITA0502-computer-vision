@@ -1,31 +1,31 @@
+import numpy as np
 import cv2
 
-def main():
-    
-    cap = cv2.VideoCapture(0)
-    
-    
-    bg_subtractor = cv2.createBackgroundSubtractorMOG2()
-    
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        
-        
-        fg_mask = bg_subtractor.apply(frame)
-        
-        
-        cv2.imshow("Original Frame", frame)
-        cv2.imshow("Foreground Mask", fg_mask)
-        
-        if cv2.waitKey(30) & 0xFF == ord("q"):
-            break
-    
-    cap.release()
-    cv2.destroyAllWindows()
 
-if __name__ == "__main__":
-    main()
 
+
+img = cv2.imread(r"C:\Users\yasee\OneDrive\Pictures\OIP.jpeg")
+cv2.imshow("original image",img)
+
+
+mask = np.zeros(img.shape[:2],np.uint8)
+bgdModel = np.zeros((1,65),np.float64)
+fgdModel = np.zeros((1,65),np.float64)
+
+
+rect = (150,50,500,470)
+
+
+cv2.grabCut(img,mask,rect,bgdModel,fgdModel,20,cv2.GC_INIT_WITH_RECT)
+mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+img = img*mask2[:,:,np.newaxis]
+
+
+
+
+cv2.imshow('background Image',img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+    
 
